@@ -1,10 +1,9 @@
 import { NextFunction, Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
-import HttpResponse from '../utils/response';
-import logger from '../utils/logger';
-import ResponseError from '../error/response_error';
-import Session from '../models/session.model';
-import { dateFormatter } from '../utils/dayjs';
+import HttpResponse from '@src/utils/response';
+import logger from '@src/utils/logger';
+import ResponseError from '@src/error/response_error';
+import Session from '@src/models/session.model';
+import { dateFormatter } from '@src/utils/dayjs';
 
 const authMiddleware = async (
   req: Request,

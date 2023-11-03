@@ -1,5 +1,5 @@
 import { Sequelize, Options, Dialect } from 'sequelize';
-import logger from '../utils/logger';
+import logger from '@src/utils/logger';
 
 const DB_CONFIG: Options = {
   host: process.env.DB_HOST || 'localhost',

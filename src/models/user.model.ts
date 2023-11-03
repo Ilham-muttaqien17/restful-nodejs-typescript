@@ -6,8 +6,8 @@ import {
   CreationOptional,
   HasManyAddAssociationMixin,
 } from 'sequelize';
-import db from '../db';
-import Session from './session.model';
+import db from '@src/db';
+import Session from '@src/models/session.model';
 
 export interface UserAttributes {
   name: string;

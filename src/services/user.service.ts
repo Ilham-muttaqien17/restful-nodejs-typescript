@@ -1,13 +1,13 @@
 import { Request, Response } from 'express';
-import User, { type UserAttributes } from '../models/user.model';
-import ResponseError from '../error/response_error';
 import { Model } from 'sequelize';
 import { z } from 'zod';
-import { validator } from '../utils/validator';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import Session from '../models/session.model';
-import { dateFormatter } from '../utils/dayjs';
+import User, { type UserAttributes } from '@src/models/user.model';
+import ResponseError from '@src/error/response_error';
+import { validator } from '@src/utils/validator';
+import Session from '@src/models/session.model';
+import { dateFormatter } from '@src/utils/dayjs';
 
 const PASSWORD_REGEX = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])');
 const EMAIL_REGEX = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;

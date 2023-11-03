@@ -1,8 +1,8 @@
-import ResponseError from '../error/response_error';
 import { Response } from 'express';
-import { Nullable } from '../types';
 import { ValidationError } from 'sequelize';
-import { ucFirst } from './helpers';
+import ResponseError from '@src/error/response_error';
+import { Nullable } from '@src/types';
+import { ucFirst } from '@src/utils/helpers';
 
 interface SuccessResponse {
   statusCode: number;

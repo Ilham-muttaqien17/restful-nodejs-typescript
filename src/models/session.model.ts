@@ -5,7 +5,7 @@ import {
   InferCreationAttributes,
   Model,
 } from 'sequelize';
-import db from '../db';
+import db from '@src/db';
 
 export interface SessionAttributes {
   token: string;

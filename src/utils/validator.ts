@@ -1,6 +1,6 @@
 import { ZodSchema, ZodError, ZodIssue, z } from 'zod';
-import ResponseError from '../error/response_error';
-import { ucFirst } from './helpers';
+import ResponseError from '@src/error/response_error';
+import { ucFirst } from '@src/utils/helpers';
 
 type AnyType = any;
 

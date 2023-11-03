@@ -4,10 +4,10 @@ import {
   getAllUser,
   getDetailUser,
   updateUser,
-} from '../services/user.service';
-import logger from '../utils/logger';
-import ResponseError from '../error/response_error';
-import HttpResponse from '../utils/response';
+} from '@src/services/user.service';
+import logger from '@src/utils/logger';
+import ResponseError from '@src/error/response_error';
+import HttpResponse from '@src/utils/response';
 
 const list = async (req: Request, res: Response, next: NextFunction) => {
   try {

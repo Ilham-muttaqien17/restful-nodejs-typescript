@@ -1,12 +1,12 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 import {
   createUser,
   createSession,
   destroySession,
   currentUser,
-} from '../services/user.service';
-import logger from '../utils/logger';
-import HttpResponse from '../utils/response';
+} from '@src/services/user.service';
+import logger from '@src/utils/logger';
+import HttpResponse from '@src/utils/response';
 
 const register = async (req: Request, res: Response) => {
   try {
