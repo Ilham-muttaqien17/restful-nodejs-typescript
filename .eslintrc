@@ -6,6 +6,8 @@
   "rules": {
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/ban-types": "error",
-    "@stylistic/ts/comma-dangle": ["error", "never"]
+    "@stylistic/ts/comma-dangle": ["error", "never"],
+    "@stylistic/ts/quotes": ["error", "single"],
+    "indent": ["error", 2]
   }
 }
