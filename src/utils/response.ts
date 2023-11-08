@@ -12,7 +12,7 @@ interface SuccessResponse {
 }
 
 const HttpResponse = {
-  success: async (res: Response, data: SuccessResponse) => {
+  success: (res: Response, data: SuccessResponse) => {
     return res.status(data.statusCode).send({
       status: data.statusCode,
       message: data.message,
@@ -20,7 +20,7 @@ const HttpResponse = {
       pagination: data.pagination,
     });
   },
-  error: async (res: Response, err: any) => {
+  error: (res: Response, err: any) => {
     if (err instanceof ValidationError) {
       return res.status(422).send({
         status: 422,

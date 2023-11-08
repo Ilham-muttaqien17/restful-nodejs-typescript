@@ -68,8 +68,8 @@ const createUser = async (req: Request) => {
  */
 const createSession = async (req: Request) => {
   const validations = {
-    email: z.string(),
-    password: z.string(),
+    email: z.string().min(1, 'Is required'),
+    password: z.string().min(1, 'Is required'),
   };
 
   const parsedBody = validator<UserAttributes>({
@@ -178,7 +178,7 @@ const getDetailUser = async (id: string) => {
 
 const updateUser = async (req: Request, id: number) => {
   const validations = {
-    name: z.string().min(1, 'Cannot be empty string').optional(),
+    name: z.string().min(1, 'Is required').optional(),
   };
 
   const parsedBody = validator<UserAttributes>({

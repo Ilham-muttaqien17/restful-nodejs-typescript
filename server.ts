@@ -1,5 +1,4 @@
 import 'dotenv/config';
-import 'module-alias/register';
 import express from 'express';
 import logger from '@src/utils/logger';
 import publicRoutes from '@src/routes/public';
@@ -8,7 +7,7 @@ import db from '@src/db';
 
 const PORT = process.env.PORT || 3000;
 
-const app = express();
+export const app = express();
 
 app.use(express.json());
 

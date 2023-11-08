@@ -5,18 +5,31 @@
   "main": "server.ts",
   "scripts": {
     "dev": "tsx watch server.ts",
-    "start": "tsc && node ./dist/server.js"
+    "start": "tsc && node -r module-alias/register ./dist/server.js",
+    "test": "jest -i --forceExit"
   },
   "_moduleAliases": {
-    "@src": "dist/src"
+    "@src": "dist/src",
+    "@test": "dist/test",
+    "@@": "./"
   },
   "author": "Ilham Muttaqien",
   "license": "ISC",
   "devDependencies": {
+    "@babel/core": "^7.23.2",
+    "@babel/preset-env": "^7.23.2",
+    "@babel/preset-typescript": "^7.23.2",
     "@types/bcrypt": "^5.0.0",
     "@types/express": "^4.17.17",
+    "@types/jest": "^29.5.7",
     "@types/jsonwebtoken": "^9.0.3",
     "@types/pino": "^7.0.5",
+    "@types/supertest": "^2.0.15",
+    "babel-jest": "^29.7.0",
+    "jest": "^29.7.0",
+    "supertest": "^6.3.3",
+    "ts-jest": "^29.1.1",
+    "ts-node": "^10.9.1",
     "tsx": "^3.12.8",
     "typescript": "^5.2.2"
   },
