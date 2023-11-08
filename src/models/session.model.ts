@@ -1,10 +1,4 @@
-import {
-  CreationOptional,
-  DataTypes,
-  InferAttributes,
-  InferCreationAttributes,
-  Model,
-} from 'sequelize';
+import { CreationOptional, DataTypes, InferAttributes, InferCreationAttributes, Model } from 'sequelize';
 import db from '@src/db';
 
 export interface SessionAttributes {
@@ -13,10 +7,7 @@ export interface SessionAttributes {
 }
 
 class Session
-  extends Model<
-    InferAttributes<Session>,
-    InferCreationAttributes<Session, { omit: 'userId' }>
-  >
+  extends Model<InferAttributes<Session>, InferCreationAttributes<Session, { omit: 'userId' }>>
   implements SessionAttributes
 {
   declare id: CreationOptional<number>;
@@ -34,23 +25,23 @@ Session.init(
       type: DataTypes.INTEGER,
       allowNull: false,
       autoIncrement: true,
-      primaryKey: true,
+      primaryKey: true
     },
     token: {
       type: DataTypes.TEXT,
-      allowNull: false,
+      allowNull: false
     },
     expiredAt: {
       type: DataTypes.BIGINT,
-      allowNull: false,
+      allowNull: false
     },
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE,
-    userId: DataTypes.INTEGER,
+    userId: DataTypes.INTEGER
   },
   {
     timestamps: true,
-    sequelize: db.sequelize,
+    sequelize: db.sequelize
     // paranoid: true, // soft delete
   }
 );

@@ -17,14 +17,14 @@ const HttpResponse = {
       status: data.statusCode,
       message: data.message,
       data: data.data,
-      pagination: data.pagination,
+      pagination: data.pagination
     });
   },
   error: (res: Response, err: any) => {
     if (err instanceof ValidationError) {
       return res.status(422).send({
         status: 422,
-        message: ucFirst(err.errors[0].message),
+        message: ucFirst(err.errors[0].message)
       });
     }
 
@@ -32,10 +32,10 @@ const HttpResponse = {
       return res.status(err.statusCode).send({
         status: err.statusCode,
         message: err.message,
-        errors: err.errors,
+        errors: err.errors
       });
     }
-  },
+  }
 };
 
 export default HttpResponse;

@@ -4,7 +4,7 @@ import {
   InferAttributes,
   InferCreationAttributes,
   CreationOptional,
-  HasManyAddAssociationMixin,
+  HasManyAddAssociationMixin
 } from 'sequelize';
 import db from '@src/db';
 import Session from '@src/models/session.model';
@@ -15,10 +15,7 @@ export interface UserAttributes {
   password: string;
 }
 
-class User
-  extends Model<InferAttributes<User>, InferCreationAttributes<User>>
-  implements UserAttributes
-{
+class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> implements UserAttributes {
   declare id: CreationOptional<number>;
   declare name: string;
   declare email: string;
@@ -36,27 +33,27 @@ User.init(
       type: DataTypes.INTEGER,
       allowNull: false,
       autoIncrement: true,
-      primaryKey: true,
+      primaryKey: true
     },
     name: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: false
     },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
+      unique: true
     },
     password: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: false
     },
     createdAt: DataTypes.DATE,
-    updatedAt: DataTypes.DATE,
+    updatedAt: DataTypes.DATE
   },
   {
     timestamps: true,
-    sequelize: db.sequelize,
+    sequelize: db.sequelize
     // paranoid: true, // soft delete
   }
 );
@@ -64,7 +61,7 @@ User.init(
 User.hasMany(Session, {
   as: 'sessions',
   foreignKey: 'userId',
-  onDelete: 'CASCADE',
+  onDelete: 'CASCADE'
 });
 
 export default User;

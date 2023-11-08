@@ -8,7 +8,7 @@ const DB_CONFIG: Options = {
   username: process.env.DB_USERNAME || 'postgres',
   database: process.env.DB_NAME || 'postgres',
   dialect: (process.env.DB_DRIVER as Dialect) || 'postgres',
-  logging: false,
+  logging: false
 };
 
 const sequelize = new Sequelize(DB_CONFIG);
@@ -25,5 +25,5 @@ const connect = async () => {
 
 export default {
   sequelize,
-  connect,
+  connect
 };

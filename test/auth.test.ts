@@ -12,7 +12,7 @@ describe('Register New User', () => {
     const result = await supertest(app).post('/api/register').send({
       name: 'test',
       email: 'test@gmail.com',
-      password: 'test123ASD',
+      password: 'test123ASD'
     });
 
     logger.info(result.body);
@@ -24,7 +24,7 @@ describe('Register New User', () => {
     const result = await supertest(app).post('/api/register').send({
       name: '',
       email: '',
-      password: '',
+      password: ''
     });
 
     logger.info(result.body);
@@ -37,7 +37,7 @@ describe('Register New User', () => {
     const result = await supertest(app).post('/api/register').send({
       name: 'test',
       email: 'test@@@@@',
-      password: 'test123ASD',
+      password: 'test123ASD'
     });
 
     logger.info(result.body);
@@ -50,7 +50,7 @@ describe('Register New User', () => {
     const result = await supertest(app).post('/api/register').send({
       name: 'test',
       email: 'test@gmail.com',
-      password: 'test',
+      password: 'test'
     });
 
     logger.info(result.body);
@@ -63,7 +63,7 @@ describe('Register New User', () => {
     const result = await supertest(app).post('/api/register').send({
       name: 'test',
       email: 'test@gmail.com',
-      password: 'test123ASD',
+      password: 'test123ASD'
     });
 
     logger.info(result.body);
@@ -85,7 +85,7 @@ describe('Login User', () => {
   it('should login new session user', async () => {
     const result = await supertest(app).post('/api/login').send({
       email: 'test@gmail.com',
-      password: 'test123ASD',
+      password: 'test123ASD'
     });
 
     logger.info(result.body);
@@ -97,7 +97,7 @@ describe('Login User', () => {
   it('should reject if invalid credentials', async () => {
     const result = await supertest(app).post('/api/login').send({
       email: 'test@gmail.com',
-      password: 'test',
+      password: 'test'
     });
 
     logger.info(result.body);
@@ -128,7 +128,7 @@ describe('Logout', () => {
   it('should can logout', async () => {
     const loginInfo = await supertest(app).post('/api/login').send({
       email: 'test@gmail.com',
-      password: 'test123ASD',
+      password: 'test123ASD'
     });
     const result = await supertest(app)
       .delete('/api/logout')
@@ -150,9 +150,7 @@ describe('Logout', () => {
   });
 
   it('should reject logout if invalid token', async () => {
-    const result = await supertest(app)
-      .delete('/api/logout')
-      .set('Authorization', 'Basic asdasd');
+    const result = await supertest(app).delete('/api/logout').set('Authorization', 'Basic asdasd');
 
     logger.info(result.body);
 

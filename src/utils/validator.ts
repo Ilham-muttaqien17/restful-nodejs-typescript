@@ -35,29 +35,18 @@ const getErrors = (err: ZodIssue[]) => {
 const createErrorMessage = (err: ZodIssue[]): string => {
   const errorLength = err.length;
   const restOfError = err.length - 1;
-  if (
-    err[0].code === z.ZodIssueCode.invalid_type &&
-    err[0].received === 'undefined'
-  ) {
+  if (err[0].code === z.ZodIssueCode.invalid_type && err[0].received === 'undefined') {
     return err[0].path
       .map((v) => ucFirst(v.toString()))
       .join('.')
       .concat(' is required')
-      .concat(
-        errorLength > 1
-          ? ` & ${restOfError} other ${restOfError > 1 ? 'errors' : 'error'}`
-          : ''
-      );
+      .concat(errorLength > 1 ? ` & ${restOfError} other ${restOfError > 1 ? 'errors' : 'error'}` : '');
   }
   const message = err[0].path
     .map((v) => ucFirst(v.toString()))
     .join('.')
     .concat(' ' + err[0].message.toLowerCase())
-    .concat(
-      errorLength > 1
-        ? ` & ${restOfError} other ${restOfError > 1 ? 'errors' : 'error'}`
-        : ''
-    );
+    .concat(errorLength > 1 ? ` & ${restOfError} other ${restOfError > 1 ? 'errors' : 'error'}` : '');
   return message;
 };
 
@@ -72,11 +61,7 @@ const validator = <T extends AnyType = AnyType>(options: Validator<T>) => {
     return result as T;
   } catch (err: any) {
     if (err instanceof ZodError) {
-      throw new ResponseError(
-        422,
-        createErrorMessage(err.issues),
-        getErrors(err.issues)
-      );
+      throw new ResponseError(422, createErrorMessage(err.issues), getErrors(err.issues));
     }
   }
 };
