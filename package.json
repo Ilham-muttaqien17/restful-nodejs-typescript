@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "tsx watch server.ts",
     "start": "tsc && node -r module-alias/register ./dist/server.js",
-    "test": "jest -i --forceExit",
+    "test": "jest -i",
     "lint": "eslint . --ext=.ts",
     "prepare": "husky install",
     "commitlint": "commitlint --edit"
@@ -24,6 +24,7 @@
     "@babel/preset-typescript": "^7.23.2",
     "@commitlint/cli": "^18.2.0",
     "@commitlint/config-conventional": "^18.1.0",
+    "@jest/types": "^29.6.3",
     "@stylistic/eslint-plugin-ts": "^1.0.1",
     "@types/bcrypt": "^5.0.0",
     "@types/express": "^4.17.17",

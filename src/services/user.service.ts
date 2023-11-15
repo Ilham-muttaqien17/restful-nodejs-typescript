@@ -12,7 +12,7 @@ import { dateFormatter } from '@src/utils/dayjs';
 const PASSWORD_REGEX = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])');
 const EMAIL_REGEX = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
-const USER_ATTRIBUTES = ['id', 'email', 'name', 'createdAt', 'updatedAt'];
+const USER_ATTRIBUTES = ['id', 'email', 'name', 'description', 'createdAt', 'updatedAt'];
 
 /**
  * Create new user
@@ -20,7 +20,7 @@ const USER_ATTRIBUTES = ['id', 'email', 'name', 'createdAt', 'updatedAt'];
  * @returns Object of created user
  */
 const createUser = async (req: Request) => {
-  const validations = {
+  const validations: Record<keyof UserAttributes, any> = {
     name: z.string(),
     email: z.string().refine((val) => EMAIL_REGEX.test(val), {
       message: 'Is not valid format'
@@ -30,7 +30,8 @@ const createUser = async (req: Request) => {
       .min(8)
       .refine((val) => PASSWORD_REGEX.test(val), {
         message: 'At least contain lower char, upper char & number'
-      })
+      }),
+    description: z.string().optional()
   };
 
   const parsedBody = validator<UserAttributes>({
@@ -54,7 +55,8 @@ const createUser = async (req: Request) => {
   return await User.create<Model<UserAttributes>>({
     name: parsedBody?.name as string,
     email: parsedBody?.email as string,
-    password: hashedPassword
+    password: hashedPassword,
+    description: parsedBody?.description as string
   });
 };
 
@@ -123,7 +125,7 @@ const destroySession = async (res: Response) => {
 };
 
 /**
- * Get current user logged in
+ * Get current logged in user
  * @param res - Axios Response
  * @returns current user
  */
@@ -136,6 +138,40 @@ const currentUser = async (res: Response) => {
     attributes: USER_ATTRIBUTES
   });
   return user;
+};
+
+/**
+ * Update current user data
+ * @param req - Axios Request
+ * @param res - Axios Response
+ * @returns Updated current user data
+ */
+const updateCurrentUser = async (req: Request, res: Response) => {
+  const validations: Record<keyof Pick<UserAttributes, 'name' | 'description'>, any> = {
+    name: z.string().min(1, 'Is required').optional(),
+    description: z.string().optional()
+  };
+
+  const parsedBody = validator<UserAttributes>({
+    data: req.body,
+    schema: z.object(validations)
+  });
+
+  const session = res.locals.session as Session;
+  const user = await User.findOne({
+    where: {
+      id: session.userId
+    }
+  });
+
+  if (!user) {
+    throw new ResponseError(404, 'User is not found!');
+  }
+
+  return await user.update({
+    name: parsedBody?.name,
+    description: parsedBody?.description
+  });
 };
 
 /**
@@ -225,5 +261,6 @@ export {
   deleteUser,
   updateUser,
   destroySession,
-  currentUser
+  currentUser,
+  updateCurrentUser
 };

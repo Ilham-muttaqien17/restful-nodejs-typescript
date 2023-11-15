@@ -5,7 +5,8 @@ const createTestUser = async () => {
   await User.create({
     name: 'test',
     password: bcrypt.hashSync('test123ASD', 10),
-    email: 'test@gmail.com'
+    email: 'test@gmail.com',
+    description: 'test'
   });
 };
 

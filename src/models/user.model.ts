@@ -13,6 +13,7 @@ export interface UserAttributes {
   name: string;
   email: string;
   password: string;
+  description: string;
 }
 
 class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> implements UserAttributes {
@@ -20,6 +21,7 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> i
   declare name: string;
   declare email: string;
   declare password: string;
+  declare description: string;
 
   declare addSession: HasManyAddAssociationMixin<Session, number>;
 
@@ -47,6 +49,10 @@ User.init(
     password: {
       type: DataTypes.STRING,
       allowNull: false
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: true
     },
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE

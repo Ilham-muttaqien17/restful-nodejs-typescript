@@ -15,6 +15,7 @@ router.delete('/users/:id', user.destroy);
 
 // Auth
 router.get('/current-user', auth.current);
+router.patch('/current-user', auth.update);
 router.delete('/logout', auth.logout);
 
 export default router;

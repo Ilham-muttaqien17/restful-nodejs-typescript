@@ -1,5 +1,5 @@
 import supertest from 'supertest';
-import { app } from '@@/server';
+import app from '@src/app';
 import logger from '@src/utils/logger';
 import tesUser from '@test/utils/user';
 
