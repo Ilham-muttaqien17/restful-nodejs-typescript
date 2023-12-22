@@ -17,10 +17,8 @@ const connect = async () => {
   await sequelize.authenticate();
   logger.info('Database connected successfully!');
 
-  if (process.env.NODE_ENV === 'development') {
-    await sequelize.sync();
-    logger.info('Database syncronized successfully!');
-  }
+  await sequelize.sync({ alter: true });
+  logger.info('Database syncronized successfully!');
 };
 
 export default {
