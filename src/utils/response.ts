@@ -35,6 +35,11 @@ const HttpResponse = {
         errors: err.errors
       });
     }
+
+    return res.status(err.statusCode).send({
+      status: err.statusCode,
+      message: err.message
+    });
   }
 };
 

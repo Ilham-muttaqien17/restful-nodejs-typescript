@@ -58,6 +58,7 @@
     "pg-hstore": "^2.3.4",
     "pino": "^8.15.1",
     "pino-pretty": "^10.2.0",
+    "rate-limiter-flexible": "^4.0.0",
     "sequelize": "^6.33.0",
     "zod": "^3.22.4"
   },
