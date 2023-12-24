@@ -25,6 +25,14 @@ const register = async (req: Request, res: Response) => {
 const login = async (req: Request, res: Response) => {
   try {
     const result = await createSession(req);
+
+    res.cookie('token', result.access_token, {
+      httpOnly: true,
+      expires: result.expiredAt,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax'
+    });
+
     HttpResponse.success(res, {
       statusCode: 200,
       data: result

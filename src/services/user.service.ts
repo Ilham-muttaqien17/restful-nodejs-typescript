@@ -96,12 +96,12 @@ const createSession = async (req: Request) => {
     expiresIn: '15m'
   });
 
-  const expiredAt = dateFormatter().add(15, 'minutes').unix();
+  const expiredAt = dateFormatter().add(15, 'minutes');
 
   await user.addSession(
     await Session.create({
       token: token,
-      expiredAt: expiredAt
+      expiredAt: expiredAt.unix()
     })
   );
 
@@ -109,7 +109,8 @@ const createSession = async (req: Request) => {
     id: user.id,
     name: user.name,
     email: user.email,
-    access_token: token
+    access_token: token,
+    expiredAt: expiredAt.toDate()
   };
 
   return data;
