@@ -1,5 +1,10 @@
 import type { Request } from 'express';
 
+/**
+ * Create pagination params
+ * @param req - Axios Request
+ * @returns Object of pagination params - page, limit, col, direction, offset
+ */
 export const buildPaginationParams = (req: Request) => {
   const { query } = req;
   const limit = parseInt(query.per_page as string, 10) || 10;
