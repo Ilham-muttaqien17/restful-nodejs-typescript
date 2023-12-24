@@ -6,10 +6,15 @@ import HttpResponse from '@src/utils/response';
 
 const list = async (req: Request, res: Response) => {
   try {
-    const users = await getAllUser();
+    const { page, limit: per_page, rows: data, total } = await getAllUser(req);
     HttpResponse.success(res, {
       statusCode: 200,
-      data: users
+      data,
+      pagination: {
+        page,
+        per_page,
+        total
+      }
     });
   } catch (err: any) {
     logger.error(err);

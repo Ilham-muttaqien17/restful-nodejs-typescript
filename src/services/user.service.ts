@@ -8,6 +8,7 @@ import ResponseError from '@src/error/response_error';
 import { validator } from '@src/utils/validator';
 import Session from '@src/models/session.model';
 import { dateFormatter } from '@src/utils/dayjs';
+import { buildPaginationParams } from '@src/utils/pagination';
 
 const PASSWORD_REGEX = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])');
 const EMAIL_REGEX = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -179,16 +180,28 @@ const updateCurrentUser = async (req: Request, res: Response) => {
  * Get all user
  * @returns Promise<User[]>
  */
-const getAllUser = async () => {
-  const users = await User.findAll({
+const getAllUser = async (req: Request) => {
+  const { page, limit, offset, col, direction } = buildPaginationParams(req);
+
+  const users = await User.findAndCountAll({
     attributes: USER_ATTRIBUTES,
-    include: {
-      as: 'sessions',
-      model: Session
-    }
+    limit,
+    offset,
+    order: [[col, direction]]
+    // include: {
+    //   as: 'sessions',
+    //   model: Session
+    // },
   });
 
-  return users;
+  const data = {
+    rows: users.rows,
+    total: users.count,
+    page,
+    limit
+  };
+
+  return data;
 };
 
 /**

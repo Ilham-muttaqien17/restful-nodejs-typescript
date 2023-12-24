@@ -43,8 +43,8 @@ User.init(
     },
     email: {
       type: DataTypes.STRING,
-      allowNull: false,
-      unique: true
+      allowNull: false
+      // unique: true
     },
     password: {
       type: DataTypes.STRING,
@@ -59,7 +59,13 @@ User.init(
   },
   {
     timestamps: true,
-    sequelize: db.sequelize
+    sequelize: db.sequelize,
+    indexes: [
+      {
+        unique: true,
+        fields: ['email']
+      }
+    ]
     // paranoid: true, // soft delete
   }
 );
