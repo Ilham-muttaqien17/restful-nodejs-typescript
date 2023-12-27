@@ -12,12 +12,12 @@ interface SuccessResponse {
 }
 
 const HttpResponse = {
-  success: (res: Response, data: SuccessResponse) => {
-    return res.status(data.statusCode).send({
-      status: data.statusCode,
-      message: data.message,
-      data: data.data,
-      pagination: data.pagination
+  success: (res: Response, { statusCode, message, data, pagination }: SuccessResponse) => {
+    return res.status(statusCode).send({
+      status: statusCode,
+      message: message,
+      data: data,
+      pagination: pagination
     });
   },
   error: (res: Response, err: any) => {

@@ -11,14 +11,15 @@ const authMiddleware = async (req: Request, res: Response, next: NextFunction) =
       throw new ResponseError(401, 'Unauthorized');
     }
 
-    if (req.headers.authorization.split(' ')[0] !== 'Bearer') {
+    const [tokenType, tokenValue] = req.headers.authorization.split(' ');
+
+    if (tokenType !== 'Bearer') {
       throw new ResponseError(401, 'Unauthorized');
     }
 
-    const token = String(req.headers.authorization.split(' ')[1] ?? '');
     const session = await Session.findOne({
       where: {
-        token: token
+        token: tokenValue
       }
     });
 
