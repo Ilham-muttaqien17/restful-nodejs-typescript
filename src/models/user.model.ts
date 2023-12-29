@@ -60,6 +60,7 @@ User.init(
   {
     timestamps: true,
     sequelize: db.sequelize,
+    tableName: 'users',
     indexes: [
       {
         unique: true,

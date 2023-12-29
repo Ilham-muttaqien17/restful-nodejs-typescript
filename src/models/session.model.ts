@@ -41,7 +41,8 @@ Session.init(
   },
   {
     timestamps: true,
-    sequelize: db.sequelize
+    sequelize: db.sequelize,
+    tableName: 'sessions'
     // paranoid: true, // soft delete
   }
 );
