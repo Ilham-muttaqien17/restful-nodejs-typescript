@@ -9,11 +9,13 @@ import { validator } from '@src/utils/validator';
 import Session from '@src/models/session.model';
 import { dateFormatter } from '@src/utils/dayjs';
 import { buildPaginationParams } from '@src/utils/pagination';
+import { toArray } from '@src/utils/helpers';
+import { validateUploadedFile } from '@src/utils/multipart';
 
 const PASSWORD_REGEX = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])');
 const EMAIL_REGEX = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
-const USER_ATTRIBUTES = ['id', 'email', 'name', 'description', 'createdAt', 'updatedAt'];
+const USER_ATTRIBUTES = ['id', 'email', 'name', 'description', 'profileImg', 'createdAt', 'updatedAt'];
 
 /**
  * Create new user
@@ -21,7 +23,7 @@ const USER_ATTRIBUTES = ['id', 'email', 'name', 'description', 'createdAt', 'upd
  * @returns Object of created user
  */
 const createUser = async (req: Request) => {
-  const validations: Record<keyof UserAttributes, any> = {
+  const validations: Record<keyof Omit<UserAttributes, 'profileImg'>, any> = {
     name: z.string(),
     email: z.string().refine((val) => EMAIL_REGEX.test(val), {
       message: 'Is not valid format'
@@ -53,7 +55,7 @@ const createUser = async (req: Request) => {
   const saltRounds = 10;
   const hashedPassword = bcrypt.hashSync(parsedBody?.password as string, saltRounds);
 
-  return await User.create<Model<UserAttributes>>({
+  return await User.create<Model<Omit<UserAttributes, 'profileImg'>>>({
     name: parsedBody?.name as string,
     email: parsedBody?.email as string,
     password: hashedPassword,
@@ -149,6 +151,11 @@ const currentUser = async (res: Response) => {
  * @returns Updated current user data
  */
 const updateCurrentUser = async (req: Request, res: Response) => {
+  const reqFile = toArray<Express.Multer.File>(req.files).find(
+    (v) => v.fieldname === 'profile-img'
+  ) as Express.Multer.File;
+  const validatedFile = validateUploadedFile(reqFile, ['image/jpeg', 'image/png']);
+
   const validations: Record<keyof Pick<UserAttributes, 'name' | 'description'>, any> = {
     name: z.string().min(1, 'Is required').optional(),
     description: z.string().optional()
@@ -172,7 +179,8 @@ const updateCurrentUser = async (req: Request, res: Response) => {
 
   return await user.update({
     name: parsedBody?.name,
-    description: parsedBody?.description
+    description: parsedBody?.description,
+    profileImg: validatedFile ? '/public/'.concat(validatedFile?.filename) : ''
   });
 };
 

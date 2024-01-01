@@ -16,6 +16,8 @@ app.use(limiter);
 app.use(helmet());
 // Sanitize request data
 app.use(sanitizer);
+// Static directory
+app.use('/public', express.static('uploads'));
 
 // Public route
 app.use('/api', publicRoutes);

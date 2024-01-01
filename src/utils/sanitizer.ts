@@ -2,6 +2,11 @@ import { FilterXSS } from 'xss';
 
 const saniziter = new FilterXSS();
 
+/**
+ * Data sanitizer form XSS Injection
+ * @param data - Any type of data
+ * @returns Sanitized data from xss injection
+ */
 const sanitize = (data: any): any => {
   if (typeof data === 'string') {
     return saniziter.process(data);
