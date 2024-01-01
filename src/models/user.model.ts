@@ -23,7 +23,7 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> i
   declare email: string;
   declare password: string;
   declare description: string;
-  declare profileImg: string;
+  declare profileImg: CreationOptional<string>;
 
   declare addSession: HasManyAddAssociationMixin<Session, number>;
 
