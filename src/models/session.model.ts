@@ -3,7 +3,6 @@ import db from '@src/db';
 
 export interface SessionAttributes {
   token: string;
-  expiredAt: number;
 }
 
 class Session
@@ -12,7 +11,6 @@ class Session
 {
   declare id: CreationOptional<number>;
   declare token: string;
-  declare expiredAt: number;
   declare userId: number;
 
   declare createdAt: CreationOptional<Date>;
@@ -29,10 +27,6 @@ Session.init(
     },
     token: {
       type: DataTypes.TEXT,
-      allowNull: false
-    },
-    expiredAt: {
-      type: DataTypes.BIGINT,
       allowNull: false
     },
     createdAt: DataTypes.DATE,

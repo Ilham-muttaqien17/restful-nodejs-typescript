@@ -3,6 +3,7 @@ import { ValidationError } from 'sequelize';
 import ResponseError from '@src/error/response_error';
 import { Nullable } from '@src/types';
 import { ucFirst } from '@src/utils/helpers';
+import { TokenExpiredError, JsonWebTokenError } from 'jsonwebtoken';
 
 interface SuccessResponse {
   statusCode: number;
@@ -14,7 +15,6 @@ interface SuccessResponse {
 const HttpResponse = {
   success: (res: Response, { statusCode, message, data, pagination }: SuccessResponse) => {
     return res.status(statusCode).send({
-      status: statusCode,
       message: message,
       data: data,
       pagination: pagination
@@ -23,21 +23,24 @@ const HttpResponse = {
   error: (res: Response, err: any) => {
     if (err instanceof ValidationError) {
       return res.status(422).send({
-        status: 422,
         message: ucFirst(err.errors[0].message)
+      });
+    }
+
+    if (err instanceof TokenExpiredError || err instanceof JsonWebTokenError) {
+      return res.status(401).send({
+        message: 'Token is not valid'
       });
     }
 
     if (err instanceof ResponseError) {
       return res.status(err.statusCode).send({
-        status: err.statusCode,
         message: err.message,
         errors: err.errors
       });
     }
 
     return res.status(err.statusCode).send({
-      status: err.statusCode,
       message: err.message
     });
   }

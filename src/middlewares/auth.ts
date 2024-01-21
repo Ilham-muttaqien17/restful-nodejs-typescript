@@ -3,7 +3,7 @@ import HttpResponse from '@src/utils/response';
 import logger from '@src/utils/logger';
 import ResponseError from '@src/error/response_error';
 import Session from '@src/models/session.model';
-import { dateFormatter } from '@src/utils/dayjs';
+import jwt from 'jsonwebtoken';
 
 const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -17,13 +17,15 @@ const authMiddleware = async (req: Request, res: Response, next: NextFunction) =
       throw new ResponseError(401, 'Unauthorized');
     }
 
+    jwt.verify(tokenValue, process.env.JWT_SECRET);
+
     const session = await Session.findOne({
       where: {
         token: tokenValue
       }
     });
 
-    if (!session || dateFormatter().isAfter(dateFormatter.unix(session.expiredAt))) {
+    if (!session) {
       throw new ResponseError(401, 'Unauthorized');
     }
 

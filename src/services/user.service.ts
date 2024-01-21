@@ -103,8 +103,7 @@ const createSession = async (req: Request) => {
 
   await user.addSession(
     await Session.create({
-      token: token,
-      expiredAt: expiredAt.unix()
+      token: token
     })
   );
 
