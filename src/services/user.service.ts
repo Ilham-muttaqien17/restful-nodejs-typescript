@@ -7,7 +7,6 @@ import User, { type UserAttributes } from '@src/models/user.model';
 import ResponseError from '@src/error/response_error';
 import { validator } from '@src/utils/validator';
 import Session from '@src/models/session.model';
-import { dateFormatter } from '@src/utils/dayjs';
 import { buildPaginationParams } from '@src/utils/pagination';
 import { toArray } from '@src/utils/helpers';
 import { validateUploadedFile } from '@src/utils/multipart';
@@ -95,11 +94,11 @@ const createSession = async (req: Request) => {
     throw new ResponseError(400, 'Email or password is not valid');
   }
 
-  const token = jwt.sign({ data: user }, process.env.JWT_SECRET, {
-    expiresIn: '15m'
-  });
+  const maxAge = 60000 * 15; // 15 minutes in milliseconds
 
-  const expiredAt = dateFormatter().add(15, 'minutes');
+  const token = jwt.sign({ data: user }, process.env.JWT_SECRET, {
+    expiresIn: maxAge / 1000
+  });
 
   await user.addSession(
     await Session.create({
@@ -111,8 +110,11 @@ const createSession = async (req: Request) => {
     id: user.id,
     name: user.name,
     email: user.email,
-    access_token: token,
-    expiredAt: expiredAt.toDate()
+    token: {
+      type: 'Bearer',
+      value: token,
+      maxAge
+    }
   };
 
   return data;
@@ -123,8 +125,7 @@ const createSession = async (req: Request) => {
  * @param res - Axios Response
  */
 const destroySession = async (res: Response) => {
-  const session = res.locals.session as Session;
-  await session.destroy();
+  await res.locals.session.destroy();
 };
 
 /**
@@ -133,10 +134,9 @@ const destroySession = async (res: Response) => {
  * @returns current user
  */
 const currentUser = async (res: Response) => {
-  const session = res.locals.session as Session;
   const user = await User.findOne({
     where: {
-      id: session.userId
+      id: res.locals.session.userId
     },
     attributes: USER_ATTRIBUTES
   });
@@ -165,10 +165,9 @@ const updateCurrentUser = async (req: Request, res: Response) => {
     schema: z.object(validations)
   });
 
-  const session = res.locals.session as Session;
   const user = await User.findOne({
     where: {
-      id: session.userId
+      id: res.locals.session.userId
     }
   });
 

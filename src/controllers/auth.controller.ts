@@ -26,9 +26,9 @@ const login = async (req: Request, res: Response) => {
   try {
     const result = await createSession(req);
 
-    res.cookie('token', result.access_token, {
+    res.cookie('token', result.token.value, {
       httpOnly: true,
-      expires: result.expiredAt,
+      maxAge: result.token.maxAge,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax'
     });
