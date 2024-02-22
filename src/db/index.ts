@@ -36,15 +36,14 @@ export const DB_CONFIG: Record<string, Options> = {
 };
 
 type SupportedDialect = Extract<Dialect, 'mysql' | 'postgres'>;
+const { host, port, username, password, database } = DB_CONFIG[env];
 
 const connection: Record<SupportedDialect, () => Promise<void>> = {
   mysql: async () => {
-    const { host, port, username, password, database } = DB_CONFIG[env];
     const connection = await mysql.createConnection({ host, port, user: username, password });
     await connection.query(`CREATE DATABASE IF NOT EXISTS \`${database}\`;`);
   },
   postgres: async () => {
-    const { host, port, username, password, database } = DB_CONFIG[env];
     const pg = new Client({ host, port, user: username, password });
     await pg.connect();
     const row = await pg.query(`SELECT datname FROM pg_catalog.pg_database WHERE datname='${database}'`);
@@ -61,7 +60,7 @@ const connect = async () => {
   await sequelize.authenticate();
   logger.info('Database connected successfully!');
 
-  await sequelize.sync({ alter: true });
+  await sequelize.sync({ alter: false }); // set option with alter to `true` for updating model column
   logger.info('Database syncronized successfully!');
 };
 
